@@ -1,19 +1,18 @@
 package pago;
 
 public class PayPal implements EstrategiaDePago {
-    private final String correoPayPal;
+    private String correo;
 
-    public PayPal(String correoPayPal) {
-        this.correoPayPal = correoPayPal;
-    } 
-
-    public String getCorreoPayPal() {
-        return correoPayPal;
+    public PayPal(String correo) {
+        this.correo = correo;
     }
 
     @Override
     public void realizarPago(double monto) {
-        System.out.println("Se realizó el pago de $" + monto + " con la cuenta " + this.getCorreoPayPal());
+        System.out.println("Pago realizado con PayPal. Correo: " + correo);
     }
-    
+
+    public String getCorreo() {
+        return correo;
+    }
 }

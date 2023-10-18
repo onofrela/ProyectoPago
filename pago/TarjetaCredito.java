@@ -11,6 +11,14 @@ public class TarjetaCredito implements EstrategiaDePago {
 
     @Override
     public void realizarPago(double monto) {
-        System.out.println("Se realizó el pago de $" + monto + " con tarjeta de crédito cuyo número es " + numeroTarjeta);
+        System.out.println("Pago realizado con tarjeta de crédito. Número de Tarjeta: " + numeroTarjeta);
+    }
+
+    public String getNumeroTarjeta() {
+        return numeroTarjeta;
+    }
+
+    public String getFechaExpiracion() {
+        return fechaExpiracion;
     }
 }
