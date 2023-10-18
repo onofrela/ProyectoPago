@@ -3,10 +3,10 @@ package test.window;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
 
 public class PruebaVentana {
 
@@ -24,10 +24,18 @@ public class PruebaVentana {
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
         button.setHorizontalTextPosition(SwingConstants.CENTER);
 
+        // Personaliza el botón
+        button.setBackground(Color.WHITE);
+        button.setBorder(new LineBorder(Color.BLACK, 3, true));
+
         return button;
     }
 
     public static void main(String[] args) {
+        UIManager.put("Button.background", new ColorUIResource(Color.WHITE));
+        UIManager.put("Button.foreground", new ColorUIResource(Color.BLACK));
+        UIManager.put("Button.border", new LineBorder(Color.BLACK, 3, true));
+
         JFrame frame = new JFrame("Proceso de pago");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
@@ -39,62 +47,24 @@ public class PruebaVentana {
             e.printStackTrace();
         }
 
-        JPanel contentPane = new JPanel();
-        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+        JPanel contentPane = new JPanel(new BorderLayout());
 
         JLabel label = new JLabel("Elige el método para pagar");
         label.setFont(new Font("Calibri", Font.PLAIN, 16));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        contentPane.add(label, BorderLayout.NORTH);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 3;
-        gbc.anchor = GridBagConstraints.CENTER;
-
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.add(label, gbc);
-
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                int newSize = Math.max(16, Math.min(48, e.getComponent().getWidth() / 20));
-                label.setFont(new Font(label.getFont().getFamily(), label.getFont().getStyle(), newSize));
-            }
-        });
-
-        JPanel subPanel = new JPanel();
-        subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.X_AXIS));
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 3;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(subPanel, gbc);
+        JPanel subPanel = new JPanel(new GridLayout(1, 0, 10, 0));
 
         JButton buttonEfectivo = crearBoton("Efectivo", "/test/window/img/efectivo.png");
         JButton buttonPayPal = crearBoton("PayPal", "/test/window/img/paypal.png");
         JButton buttonTarjetaCredito = crearBoton("Tarjeta de Crédito", "/test/window/img/tarjeta.png");
 
-        // Configura el tamaño preferido y máximo para los botones
-        Dimension buttonSize = new Dimension(400, 200);
-        buttonEfectivo.setPreferredSize(buttonSize);
-        buttonPayPal.setPreferredSize(buttonSize);
-        buttonTarjetaCredito.setPreferredSize(buttonSize);
-        buttonEfectivo.setMaximumSize(buttonSize);
-        buttonPayPal.setMaximumSize(buttonSize);
-        buttonTarjetaCredito.setMaximumSize(buttonSize);
-
         subPanel.add(buttonEfectivo);
-        subPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         subPanel.add(buttonPayPal);
-        subPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         subPanel.add(buttonTarjetaCredito);
 
-        contentPane.add(Box.createVerticalGlue());
-        contentPane.add(panel);
-        contentPane.add(Box.createVerticalGlue());
+        contentPane.add(subPanel, BorderLayout.CENTER);
 
         frame.setContentPane(contentPane);
         frame.setVisible(true);
