@@ -3,15 +3,13 @@ package test.window;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
-import pago.*;
+import test.window.strategy.strategyEfectivo;
+import test.window.strategy.strategyPayPal;
+import test.window.strategy.strategyTarjetaCredito;
 
 public class PruebaVentana {
 
@@ -35,47 +33,6 @@ public class PruebaVentana {
 
         return button;
     }
-
-    // Función para validar el formato de correo electrónico
-    private static boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        return email.matches(emailRegex);
-    }
-
-    // Función para validar el número de tarjeta de crédito
-    private static boolean isValidCreditCardNumber(String number) {
-        String creditCardRegex = "\\d{16}";
-        return number.matches(creditCardRegex);
-    }
-
-    // Función para validar el formato de la fecha de vencimiento (MM/YY)
-    private static boolean isValidExpirationDate(String date) {
-        String expirationDateRegex = "\\d{2}/\\d{2}";
-        return date.matches(expirationDateRegex);
-    }
-
-    // Función para verificar si la tarjeta de crédito ha vencido
-    private static boolean isExpired(String expirationDate) {
-        try {
-            // Obtener la fecha actual
-            LocalDate currentDate = LocalDate.now();
-
-            String expirationDateNew = "01/" + expirationDate;
-
-            // Parsear la fecha de vencimiento
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-            LocalDate expiration = LocalDate.parse(expirationDateNew, formatter);
-            expiration.plusMonths(1);
-
-            // Comparar la fecha de vencimiento con la fecha actual
-            return expiration.isBefore(currentDate);
-        } catch (Exception e) {
-            System.out.println("Error");
-            // Manejo de errores en el formato de la fecha de vencimiento
-            return true; // Consideramos que la tarjeta está vencida en caso de error
-        }
-    }
-
     public static void main(String[] args) {
         UIManager.put("Button.background", new ColorUIResource(Color.WHITE));
         UIManager.put("Button.foreground", new ColorUIResource(Color.BLACK));
@@ -114,91 +71,8 @@ public class PruebaVentana {
         frame.setContentPane(contentPane);
         frame.setVisible(true);
 
-        // Contexto de pago
-        ContextoDePago contextoDePago = new ContextoDePago(null);
-
-        buttonEfectivo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Solicitar el monto primero
-                String montoStr = JOptionPane.showInputDialog(frame, "Ingrese el monto en efectivo:");
-                String efectivoStr = JOptionPane.showInputDialog(frame, "Ingrese el efectivo que el cliente pagó:");
-                
-                try {
-                    double monto = Double.parseDouble(montoStr);
-                    double efectivo = Double.parseDouble(efectivoStr);
-                    
-                    if (monto < 0 || efectivo < 0) {
-                        JOptionPane.showMessageDialog(frame, "Monto y efectivo deben ser valores positivos.");
-                    } else if (efectivo < monto) {
-                        JOptionPane.showMessageDialog(frame, "Pago no realizado. Efectivo insuficiente.");
-                    } else {
-                        Efectivo estrategiaEfectivo = new Efectivo(monto, efectivo);
-                        contextoDePago.setStrategy(estrategiaEfectivo);
-        
-                        contextoDePago.ejecutarPago(monto);
-                        double cambio = efectivo - monto;
-                        JOptionPane.showMessageDialog(frame, "Pago realizado en efectivo. Cambio: $" + cambio);
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Por favor, ingrese valores numéricos válidos.");
-                }
-            }
-        });        
-
-        buttonPayPal.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Solicitar el correo de PayPal
-                String correoPayPal = JOptionPane.showInputDialog(frame, "Ingrese su correo de PayPal:");
-                String montoStr = JOptionPane.showInputDialog(frame, "Ingrese el monto a pagar:");
-        
-                try {
-                    double monto = Double.parseDouble(montoStr);
-        
-                    if (!isValidEmail(correoPayPal)) {
-                        JOptionPane.showMessageDialog(frame, "Correo de PayPal no válido. Debe tener un formato de correo electrónico válido.");
-                    } else {
-                        PayPal estrategiaPayPal = new PayPal(correoPayPal);
-                        contextoDePago.setStrategy(estrategiaPayPal);
-        
-                        contextoDePago.ejecutarPago(monto);
-                        JOptionPane.showMessageDialog(frame, "Pago realizado con PayPal");
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Por favor, ingrese un valor numérico válido para el monto.");
-                }
-            }
-        });
-    
-        buttonTarjetaCredito.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Solicitar los datos de la tarjeta de crédito
-                String numeroTarjeta = JOptionPane.showInputDialog(frame, "Ingrese el número de tarjeta de crédito:");
-                String fechaExpiracion = JOptionPane.showInputDialog(frame, "Ingrese la fecha de vencimiento (MM/YY):");
-                String montoStr = JOptionPane.showInputDialog(frame, "Ingrese el monto a pagar:");
-        
-                try {
-                    double monto = Double.parseDouble(montoStr);
-        
-                    if (!isValidCreditCardNumber(numeroTarjeta)) {
-                        JOptionPane.showMessageDialog(frame, "Número de tarjeta de crédito no válido. Debe tener 16 dígitos numéricos.");
-                    } else if (!isValidExpirationDate(fechaExpiracion)) {
-                        JOptionPane.showMessageDialog(frame, "Fecha de vencimiento no válida. Debe estar en el formato MM/YY.");
-                    } else if (isExpired(fechaExpiracion)) {
-                        JOptionPane.showMessageDialog(frame, "La tarjeta de crédito ha vencido.");
-                    } else {
-                        TarjetaCredito estrategiaTarjeta = new TarjetaCredito(numeroTarjeta, fechaExpiracion);
-                        contextoDePago.setStrategy(estrategiaTarjeta);
-        
-                        contextoDePago.ejecutarPago(monto);
-                        JOptionPane.showMessageDialog(frame, "Pago realizado con tarjeta de crédito. Número de Tarjeta: " + numeroTarjeta);
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Por favor, ingrese un valor numérico válido para el monto.");
-                }
-            }
-        });
+        buttonEfectivo.addActionListener(new strategyEfectivo(frame));
+        buttonPayPal.addActionListener(new strategyPayPal(frame));
+        buttonTarjetaCredito.addActionListener(new strategyTarjetaCredito(frame));
     }
 }
