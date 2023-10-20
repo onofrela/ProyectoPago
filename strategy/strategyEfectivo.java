@@ -17,28 +17,54 @@ public class strategyEfectivo implements EstrategiaDeBoton {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Solicitar el monto primero
-        String montoStr = JOptionPane.showInputDialog(this.frame, "Ingrese el monto en efectivo:");
-        String efectivoStr = JOptionPane.showInputDialog(this.frame, "Ingrese el efectivo que el cliente pagó:");
-        
-        try {
-            double monto = Double.parseDouble(montoStr);
-            double efectivo = Double.parseDouble(efectivoStr);
-            
-            if (monto < 0 || efectivo < 0) {
-                JOptionPane.showMessageDialog(this.frame, "Monto y efectivo deben ser valores positivos.");
-            } else if (efectivo < monto) {
-                JOptionPane.showMessageDialog(this.frame, "Pago no realizado. Efectivo insuficiente.");
-            } else {
-                Efectivo estrategiaEfectivo = new Efectivo(efectivo);
-                this.contextoDePago = new ContextoDePago(estrategiaEfectivo);
+        double monto = 0;
+        double efectivo = 0;
 
-                this.contextoDePago.ejecutarPago(monto);
-                double cambio = efectivo - monto;
-                JOptionPane.showMessageDialog(this.frame, "Pago realizado en efectivo. Cambio: $" + cambio);
+        while (true) {
+            String montoStr = JOptionPane.showInputDialog(this.frame, "Ingrese el monto en efectivo:");
+            if (montoStr == null) { // El usuario cerró el cuadro de diálogo
+                return; // Salir si el usuario cancela
             }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this.frame, "Por favor, ingrese valores numéricos válidos.");
+
+            try {
+                monto = Double.parseDouble(montoStr);
+                if (monto < 0) {
+                    JOptionPane.showMessageDialog(this.frame, "El monto debe ser un valor positivo.");
+                } else {
+                    break; // Salir del bucle si el monto es válido
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this.frame, "Por favor, ingrese un valor numérico válido.");
+            }
+        }
+
+        while (true) {
+            String efectivoStr = JOptionPane.showInputDialog(this.frame, "Ingrese el efectivo que el cliente pagó:");
+            if (efectivoStr == null) { // El usuario cerró el cuadro de diálogo
+                return; // Salir si el usuario cancela
+            }
+
+            try {
+                efectivo = Double.parseDouble(efectivoStr);
+                if (efectivo < 0) {
+                    JOptionPane.showMessageDialog(this.frame, "El efectivo debe ser un valor positivo.");
+                } else {
+                    break; // Salir del bucle si el efectivo es válido
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this.frame, "Por favor, ingrese un valor numérico válido.");
+            }
+        }
+
+        if (efectivo < monto) {
+            JOptionPane.showMessageDialog(this.frame, "Pago no realizado. Efectivo insuficiente.");
+        } else {
+            Efectivo estrategiaEfectivo = new Efectivo(efectivo);
+            this.contextoDePago = new ContextoDePago(estrategiaEfectivo);
+
+            this.contextoDePago.ejecutarPago(monto);
+            double cambio = efectivo - monto;
+            JOptionPane.showMessageDialog(this.frame, "Pago realizado en efectivo. Cambio: $" + cambio);
         }
     }
 }
