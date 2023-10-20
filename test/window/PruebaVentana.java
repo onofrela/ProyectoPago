@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.swing.border.LineBorder;
+import javax.swing.border.*;
 import javax.swing.plaf.ColorUIResource;
 import test.window.strategy.strategyEfectivo;
 import test.window.strategy.strategyPayPal;
@@ -34,9 +34,6 @@ public class PruebaVentana {
         return button;
     }
     public static void main(String[] args) {
-        UIManager.put("Button.background", new ColorUIResource(Color.WHITE));
-        UIManager.put("Button.foreground", new ColorUIResource(Color.BLACK));
-        UIManager.put("Button.border", new LineBorder(Color.BLACK, 3, true));
 
         JFrame frame = new JFrame("Proceso de pago");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,5 +71,49 @@ public class PruebaVentana {
         buttonEfectivo.addActionListener(new strategyEfectivo(frame));
         buttonPayPal.addActionListener(new strategyPayPal(frame));
         buttonTarjetaCredito.addActionListener(new strategyTarjetaCredito(frame));
+    }
+}
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.*;
+
+public class Main {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Prueba");
+        frame.setSize(400, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        
+        JPanel principal = new JPanel();
+        GroupLayout layout = new GroupLayout(principal);
+        principal.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+        
+        JPanel cards = new JPanel(new GridLayout(1, 0, 10, 0)); // 1 fila, 0 columnas, espacio horizontal de 10 píxeles
+        JButton boton1 = new JButton("Haz click");
+        JButton boton2 = new JButton("Haz click");
+        cards.add(boton1);
+        cards.add(boton2);
+    
+        JLabel texto = new JLabel("Ingrese el método de pago");
+
+        principal.setBorder(new EmptyBorder(50, 50, 50, 50));
+
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addComponent(texto)
+                .addComponent(cards)
+        );
+
+        layout.setVerticalGroup(
+            layout.createSequentialGroup()
+                .addComponent(texto)
+                .addComponent(cards)
+        );
+
+        frame.add(principal);
+        frame.setVisible(true);
     }
 }
