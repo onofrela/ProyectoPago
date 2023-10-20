@@ -1,4 +1,4 @@
-package test.window.strategy;
+package strategy;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,4 +1,4 @@
-package test.window.strategy;
+package strategy;
 
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 import pago.ContextoDePago;
 import pago.TarjetaCredito;
-import test.window.Verificacion;
+import main.Verificacion;
 
 public class strategyTarjetaCredito implements EstrategiaDeBoton {
     private JFrame frame;
