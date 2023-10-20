@@ -18,29 +18,61 @@ public class strategyTarjetaCredito implements EstrategiaDeBoton {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Solicitar los datos de la tarjeta de crédito
-        String numeroTarjeta = JOptionPane.showInputDialog(this.frame, "Ingrese el número de tarjeta de crédito:");
-        String fechaExpiracion = JOptionPane.showInputDialog(this.frame, "Ingrese la fecha de vencimiento (MM/YY):");
-        String montoStr = JOptionPane.showInputDialog(this.frame, "Ingrese el monto a pagar:");
+        String numeroTarjeta;
+        String fechaExpiracion;
+        double monto = 0;
 
-        try {
-            double monto = Double.parseDouble(montoStr);
+        while (true) {
+            numeroTarjeta = JOptionPane.showInputDialog(this.frame, "Ingrese el número de tarjeta de crédito:");
+            if (numeroTarjeta == null) { // El usuario cerró el cuadro de diálogo
+                return; // Salir si el usuario cancela
+            }
 
             if (!Verificacion.isValidCreditCardNumber(numeroTarjeta)) {
                 JOptionPane.showMessageDialog(this.frame, "Número de tarjeta de crédito no válido. Debe tener 16 dígitos numéricos.");
-            } else if (!Verificacion.isValidExpirationDate(fechaExpiracion)) {
-                JOptionPane.showMessageDialog(this.frame, "Fecha de vencimiento no válida. Debe estar en el formato MM/YY.");
+            } else {
+                break; // Salir del bucle si el número de tarjeta es válido
+            }
+        }
+
+        while (true) {
+            // Solicitar la fecha de vencimiento
+            fechaExpiracion = JOptionPane.showInputDialog(this.frame, "Ingrese la fecha de vencimiento (MM/YY):");
+            if (fechaExpiracion == null) { // El usuario cerró el cuadro de diálogo
+                return; // Salir si el usuario cancela
+            }
+    
+            if (!Verificacion.isValidExpirationDate(fechaExpiracion)) {
+                JOptionPane.showMessageDialog(this.frame, "Fecha de vencimiento no válida. Debe estar en el formato MM/YY y el mes debe estar en el rango 1 a 12.");
             } else if (Verificacion.isExpired(fechaExpiracion)) {
                 JOptionPane.showMessageDialog(this.frame, "La tarjeta de crédito ha vencido.");
             } else {
-                TarjetaCredito estrategiaTarjeta = new TarjetaCredito(numeroTarjeta, fechaExpiracion);
-                this.contextoDePago = new ContextoDePago(estrategiaTarjeta);
-
-                this.contextoDePago.ejecutarPago(monto);
-                JOptionPane.showMessageDialog(this.frame, "Pago realizado con tarjeta de crédito. Número de Tarjeta: " + numeroTarjeta);
+                break; // Salir del bucle si la fecha de vencimiento es válida
             }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this.frame, "Por favor, ingrese un valor numérico válido para el monto.");
         }
+
+        while (true) {
+            String montoStr = JOptionPane.showInputDialog(this.frame, "Ingrese el monto a pagar:");
+            if (montoStr == null) { // El usuario cerró el cuadro de diálogo
+                return; // Salir si el usuario cancela
+            }
+
+            try {
+                monto = Double.parseDouble(montoStr);
+                if (monto < 0) {
+                    JOptionPane.showMessageDialog(this.frame, "El monto debe ser un valor positivo.");
+                } else {
+                    break; // Salir del bucle si el monto es válido
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this.frame, "Por favor, ingrese un valor numérico válido para el monto.");
+            }
+        }
+
+        TarjetaCredito estrategiaTarjeta = new TarjetaCredito(numeroTarjeta, fechaExpiracion);
+        this.contextoDePago = new ContextoDePago(estrategiaTarjeta);
+
+        this.contextoDePago.ejecutarPago(monto);
+        JOptionPane.showMessageDialog(this.frame, "Pago realizado con tarjeta de crédito. Número de Tarjeta: " + numeroTarjeta);
     }
 }
