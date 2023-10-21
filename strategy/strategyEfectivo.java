@@ -4,12 +4,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 
-import pago.ContextoDePago;
-import pago.Efectivo;
-
 public class strategyEfectivo implements EstrategiaDeBoton {
     private JFrame frame;
-    private ContextoDePago contextoDePago;
 
     public strategyEfectivo(JFrame frame){
         this.frame = frame;
@@ -59,10 +55,6 @@ public class strategyEfectivo implements EstrategiaDeBoton {
         if (efectivo < monto) {
             JOptionPane.showMessageDialog(this.frame, "Pago no realizado. Efectivo insuficiente.");
         } else {
-            Efectivo estrategiaEfectivo = new Efectivo(efectivo);
-            this.contextoDePago = new ContextoDePago(estrategiaEfectivo);
-
-            this.contextoDePago.ejecutarPago(monto);
             double cambio = efectivo - monto;
             JOptionPane.showMessageDialog(this.frame, "Pago realizado en efectivo. Cambio: $" + cambio);
         }

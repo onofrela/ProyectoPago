@@ -4,13 +4,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 
-import pago.ContextoDePago;
-import pago.TarjetaCredito;
 import main.Verificacion;
 
 public class strategyTarjetaCredito implements EstrategiaDeBoton {
     private JFrame frame;
-    private ContextoDePago contextoDePago;
 
     public strategyTarjetaCredito(JFrame frame){
         this.frame = frame;
@@ -69,10 +66,6 @@ public class strategyTarjetaCredito implements EstrategiaDeBoton {
             }
         }
 
-        TarjetaCredito estrategiaTarjeta = new TarjetaCredito(numeroTarjeta, fechaExpiracion);
-        this.contextoDePago = new ContextoDePago(estrategiaTarjeta);
-
-        this.contextoDePago.ejecutarPago(monto);
-        JOptionPane.showMessageDialog(this.frame, "Pago realizado con tarjeta de crédito. Número de Tarjeta: " + numeroTarjeta);
+        JOptionPane.showMessageDialog(this.frame, "Pago de $" + monto + " realizado con tarjeta de crédito. Número de Tarjeta: " + numeroTarjeta);
     }
 }

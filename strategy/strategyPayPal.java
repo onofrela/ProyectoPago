@@ -4,13 +4,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 
-import pago.ContextoDePago;
-import pago.PayPal;
 import main.Verificacion;
 
 public class strategyPayPal implements EstrategiaDeBoton {
     private JFrame frame;
-    private ContextoDePago contextoDePago;
 
     public strategyPayPal(JFrame frame){
         this.frame = frame;
@@ -52,10 +49,6 @@ public class strategyPayPal implements EstrategiaDeBoton {
             }
         }
 
-        PayPal estrategiaPayPal = new PayPal(correoPayPal);
-        this.contextoDePago = new ContextoDePago(estrategiaPayPal);
-
-        this.contextoDePago.ejecutarPago(monto);
-        JOptionPane.showMessageDialog(this.frame, "Pago realizado con PayPal");
+        JOptionPane.showMessageDialog(this.frame, "Pago de $" + monto +" realizado con PayPal con el correo " + correoPayPal);
     }
 }
