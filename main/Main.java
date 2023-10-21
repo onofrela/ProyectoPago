@@ -6,89 +6,107 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.border.*;
-import strategy.strategyEfectivo;
-import strategy.strategyPayPal;
-import strategy.strategyTarjetaCredito;
+import strategy.EstrategiaEfectivo;
+import strategy.EstrategiaPayPal;
+import strategy.EstrategiaTarjetaCredito;
 
-public class Main{
+public class Main {
 
-    private static JButton crearBoton(String text, String imagePath) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Calibri", Font.PLAIN, 16));
+    private static JButton crearBoton(String texto, String rutaImagen) {
+        //Crea el botón con el texto indicado y le añade formato
+        JButton boton = new JButton(texto);
+        boton.setFont(new Font("Calibri", Font.PLAIN, 16));
 
         try {
-            BufferedImage iconImage = ImageIO.read(Main.class.getResourceAsStream(imagePath));
-            ImageIcon icon = new ImageIcon(iconImage.getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-            button.setIcon(icon);
+            // Carga la imagen del botón
+            BufferedImage imagenIcono = ImageIO.read(Main.class.getResourceAsStream(rutaImagen));
+            ImageIcon icono = new ImageIcon(imagenIcono.getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+            boton.setIcon(icono);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        button.setVerticalTextPosition(SwingConstants.BOTTOM);
-        button.setHorizontalTextPosition(SwingConstants.CENTER);
+        //Posiciona los elementos al centro y el texto abajo
+        boton.setVerticalTextPosition(SwingConstants.BOTTOM);
+        boton.setHorizontalTextPosition(SwingConstants.CENTER);
 
         // Personaliza el botón
-        button.setBackground(Color.WHITE);
-        button.setBorder(new LineBorder(Color.BLACK, 3, true));
+        boton.setBackground(Color.WHITE);
+        boton.setBorder(new LineBorder(Color.BLACK, 3, true));
 
-        return button;
+        return boton;
     }
-    
+
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame("Proceso de pago");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(720, 480);
-        frame.setLocationRelativeTo(null);
+        //Crea la ventana de Java con ciertas características
+        JFrame ventana = new JFrame("Proceso de pago");
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.setSize(720, 480);
+        ventana.setLocationRelativeTo(null);
 
         try {
-            BufferedImage iconImage = ImageIO.read(Main.class.getResourceAsStream("/img/icono.png"));
-            frame.setIconImage(iconImage);
+            // Establece el ícono de la ventana
+            BufferedImage imagenIcono = ImageIO.read(Main.class.getResourceAsStream("/img/icono.png"));
+            ventana.setIconImage(imagenIcono);
         } catch (IOException e) {
+            // Si hay error de lectura, imprime ese mensaje
             e.printStackTrace();
         }
 
-        JPanel contentPane = new JPanel();
-        GroupLayout layout = new GroupLayout(contentPane);
-        contentPane.setLayout(layout);
+        //Origina el panel de contenido y establece un layout de grupo
+        JPanel panelContenido = new JPanel();
+        GroupLayout layout = new GroupLayout(panelContenido);
+        panelContenido.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-        
+
+        //Añade un texto
+        JLabel etiqueta = new JLabel("Elige el método de pago");
+        etiqueta.setFont(new Font("Calibri", Font.BOLD, 32));
+        etiqueta.setHorizontalAlignment(SwingConstants.CENTER);
+        panelContenido.add(etiqueta);
+
+        //Crea el panel horizontal de botones
+
         JPanel botones = new JPanel(new GridLayout(1, 0, 10, 0)); // 1 fila, 0 columnas, espacio horizontal de 10 píxeles
 
+        //Crea y añade los botones al panel de botones
 
-        JLabel label = new JLabel("Elige el método para pagar");
-        label.setFont(new Font("Calibri", Font.BOLD, 32));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        contentPane.add(label);
+        JButton botonEfectivo = crearBoton("Efectivo", "/img/efectivo.png");
+        JButton botonPayPal = crearBoton("PayPal", "/img/paypal.png");
+        JButton botonTarjetaCredito = crearBoton("Tarjeta de Crédito", "/img/tarjeta.png");
 
-        JButton buttonEfectivo = crearBoton("Efectivo", "/img/efectivo.png");
-        JButton buttonPayPal = crearBoton("PayPal", "/img/paypal.png");
-        JButton buttonTarjetaCredito = crearBoton("Tarjeta de Crédito", "/img/tarjeta.png");
+        botones.add(botonEfectivo);
+        botones.add(botonPayPal);
+        botones.add(botonTarjetaCredito);
 
-        botones.add(buttonEfectivo);
-        botones.add(buttonPayPal);
-        botones.add(buttonTarjetaCredito);
+        //Añade un margen interno de 50px
 
-        contentPane.setBorder(new EmptyBorder(50, 50, 50, 50));
+        panelContenido.setBorder(new EmptyBorder(50, 50, 50, 50));
+
+        //Establece los grupos que estarán dentro del Layout
 
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                .addComponent(label)
+                .addComponent(etiqueta)
                 .addComponent(botones)
         );
 
         layout.setVerticalGroup(
             layout.createSequentialGroup()
-                .addComponent(label)
+                .addComponent(etiqueta)
                 .addComponent(botones)
         );
 
-        frame.setContentPane(contentPane);
-        frame.setVisible(true);
 
-        buttonEfectivo.addActionListener(new strategyEfectivo(frame));
-        buttonPayPal.addActionListener(new strategyPayPal(frame));
-        buttonTarjetaCredito.addActionListener(new strategyTarjetaCredito(frame));
+        //Añade el panel de contenido a la ventana y hace que la ventana muestre todo el contenido (que aparezca en la pantalla)
+        ventana.setContentPane(panelContenido);
+        ventana.setVisible(true);
+
+        // Asigna oyentes (receptores de la acción) a los botones para activar las estrategias de pago correspondientes
+        botonEfectivo.addActionListener(new EstrategiaEfectivo(ventana));
+        botonPayPal.addActionListener(new EstrategiaPayPal(ventana));
+        botonTarjetaCredito.addActionListener(new EstrategiaTarjetaCredito(ventana));
     }
 }
