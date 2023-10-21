@@ -6,9 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.border.*;
-import strategy.EstrategiaEfectivo;
-import strategy.EstrategiaPayPal;
-import strategy.EstrategiaTarjetaCredito;
+import strategy.*;
 
 public class Main {
 
