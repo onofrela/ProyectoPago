@@ -10,12 +10,13 @@ public class Solicitador {
         this.ventana = ventana;
     }
 
+    // Método para solicitar el monto al usuario
     public double solicitarMonto() {
         double monto = 0;
         while (true) {
             String montoStr = JOptionPane.showInputDialog(this.ventana, "Ingrese el monto:");
             if (montoStr == null) {
-                // El usuario cerró el cuadro de diálogo, así que salimos
+                // Si el usuario cierra el cuadro de diálogo, se sale del método
                 return -1;
             }
 
@@ -33,13 +34,14 @@ public class Solicitador {
         return monto;
     }
 
+    // Método para solicitar el efectivo al usuario
     public double solicitarEfectivo() {
         double efectivo = 0;
 
         while (true) {
             String efectivoStr = JOptionPane.showInputDialog(this.ventana, "Ingrese el efectivo que el cliente pagó:");
             if (efectivoStr == null) {
-                // El usuario cerró el cuadro de diálogo, así que salimos
+                // Si el usuario cierra el cuadro de diálogo, se sale del método
                 return -1;
             }
 
@@ -57,13 +59,13 @@ public class Solicitador {
         return efectivo;
     }
 
-    
+    // Método para solicitar el correo de PayPal al usuario
     public String solicitarCorreoPayPal() {
         String correoPayPal;
         while (true) {
             correoPayPal = JOptionPane.showInputDialog(this.ventana, "Ingrese su correo de PayPal:");
             if (correoPayPal == null) {
-                // El usuario cerró el cuadro de diálogo, así que salimos
+                // Si el usuario cierra el cuadro de diálogo, se sale del método
                 return null;
             }
 
@@ -76,12 +78,13 @@ public class Solicitador {
         return correoPayPal;
     }
 
+    // Método para solicitar el número de tarjeta de crédito al usuario
     public String solicitarNumeroTarjeta() {
         String numeroTarjeta;
         while (true) {
             numeroTarjeta = JOptionPane.showInputDialog(this.ventana, "Ingrese el número de tarjeta de crédito:");
             if (numeroTarjeta == null) {
-                // El usuario cerró el cuadro de diálogo, así que salimos
+                // Si el usuario cierra el cuadro de diálogo, se sale del método
                 return null;
             }
 
@@ -94,12 +97,13 @@ public class Solicitador {
         return numeroTarjeta;
     }
 
+    // Método para solicitar la fecha de vencimiento al usuario
     public String solicitarFechaExpiracion() {
         String fechaExpiracion;
         while (true) {
             fechaExpiracion = JOptionPane.showInputDialog(this.ventana, "Ingrese la fecha de vencimiento (MM/YY):");
             if (fechaExpiracion == null) {
-                // El usuario cerró el cuadro de diálogo, así que salimos
+                // Si el usuario cierra el cuadro de diálogo, se sale del método
                 return null;
             }
 
