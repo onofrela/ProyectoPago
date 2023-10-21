@@ -31,6 +31,6 @@ public class EstrategiaPayPal implements EstrategiaBoton {
             return; // El usuario canceló
 
         // Muestra un mensaje de pago exitoso con el monto y el correo de PayPal
-        JOptionPane.showMessageDialog(this.ventana, "Pago de $" + monto + " realizado con PayPal con el correo " + correoPayPal);
+        JOptionPane.showMessageDialog(this.ventana, "Pago de $" + monto + " realizado con PayPal con el correo " + correoPayPal, "Pago con PayPal", JOptionPane.INFORMATION_MESSAGE);
     }
 }

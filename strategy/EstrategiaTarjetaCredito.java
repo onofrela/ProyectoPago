@@ -42,6 +42,6 @@ public class EstrategiaTarjetaCredito implements EstrategiaBoton {
             return; // La tarjeta de crédito ha vencido
 
         // Muestra un mensaje de pago exitoso con el monto y el número de tarjeta de crédito
-        JOptionPane.showMessageDialog(this.ventana, "Pago de $" + monto + " realizado con tarjeta de crédito. Número de Tarjeta: " + numeroTarjeta);
+        JOptionPane.showMessageDialog(this.ventana, "Pago de $" + monto + " realizado con tarjeta de crédito. Número de Tarjeta: " + numeroTarjeta, "Pago con Tarjeta de Crédito", JOptionPane.INFORMATION_MESSAGE);
     }
 }

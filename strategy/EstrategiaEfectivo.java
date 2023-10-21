@@ -32,11 +32,11 @@ public class EstrategiaEfectivo implements EstrategiaBoton {
 
         // Comprueba si el efectivo es suficiente para cubrir el monto y muestra un mensaje correspondiente
         if (efectivo < monto)
-            JOptionPane.showMessageDialog(this.ventana, "Pago no realizado. Efectivo insuficiente.");
+            JOptionPane.showMessageDialog(this.ventana, "Pago no realizado. Efectivo insuficiente.", "Pago en Efectivo", JOptionPane.ERROR_MESSAGE);
         else {
             // Calcula el cambio y muestra un mensaje de pago exitoso
             double cambio = efectivo - monto;
-            JOptionPane.showMessageDialog(this.ventana, "Pago de $" + monto + " realizado en efectivo. Cambio: $" + cambio);
+            JOptionPane.showMessageDialog(this.ventana, "Pago de $" + monto + " realizado en efectivo. Cambio: $" + cambio, "Pago en Efectivo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
