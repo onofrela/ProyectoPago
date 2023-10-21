@@ -66,11 +66,9 @@ public class Main {
         panelContenido.add(etiqueta);
 
         //Crea el panel horizontal de botones
-
         JPanel botones = new JPanel(new GridLayout(1, 0, 10, 0)); // 1 fila, 0 columnas, espacio horizontal de 10 píxeles
 
         //Crea y añade los botones al panel de botones
-
         JButton botonEfectivo = crearBoton("Efectivo", "/img/efectivo.png");
         JButton botonPayPal = crearBoton("PayPal", "/img/paypal.png");
         JButton botonTarjetaCredito = crearBoton("Tarjeta de Crédito", "/img/tarjeta.png");
@@ -80,11 +78,9 @@ public class Main {
         botones.add(botonTarjetaCredito);
 
         //Añade un margen interno de 50px
-
         panelContenido.setBorder(new EmptyBorder(50, 50, 50, 50));
 
         //Establece los grupos que estarán dentro del Layout
-
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addComponent(etiqueta)
@@ -96,7 +92,6 @@ public class Main {
                 .addComponent(etiqueta)
                 .addComponent(botones)
         );
-
 
         //Añade el panel de contenido a la ventana y hace que la ventana muestre todo el contenido (que aparezca en la pantalla)
         ventana.setContentPane(panelContenido);
